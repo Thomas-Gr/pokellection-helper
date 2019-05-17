@@ -83,7 +83,7 @@ public class RawTextExtractor {
                 if (wikiContent.toUpperCase().trim().startsWith("#REDIRECT")) {
                     Matcher matcher = REDIRECT.matcher(wikiContent);
                     if (matcher.find()) {
-                        wikiLink = String.format(EDIT_PAGE_LINK_2, stringToLink(matcher.group(2)));
+                        wikiLink = String.format(EDIT_PAGE_LINK_2, stringToLink(matcher.group(2).replaceAll("&", "%26")));
                         wikiContent = PageReader.readPage(wikiLink);
                     }
                 }

@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class SerieExtractor {
-    public static final String TYPE_OF_SET = "halfdecklist"; // Setlist // halfdecklist // Promo
+    public static final String TYPE_OF_SET = "Setlist"; // Setlist // halfdecklist // Promo
     public static final boolean FAST = false;
-    private static final boolean READS_FROM_BULBAPEDIA = false;
+    private static final boolean READS_FROM_BULBAPEDIA = true;
 
-    private static final String SERIE = "Neo_Destiny_(TCG)";
+    private static final String SERIE = "EX_Ruby_%26_Sapphire_(TCG)";
     private static final String INITIAL_URL = format("https://bulbapedia.bulbagarden.net/w/index.php?title=%s&action=edit", SERIE);
 
     private static final String CONTENT = "{{halfdecklist/header|title=Totodile Half Deck|type=Water|symbol=yes|image=SetSymbolTotodileIntroPackNeo.png}}\n" +
@@ -54,6 +54,7 @@ public class SerieExtractor {
         for (String set : sets) {
             Serie serie = new Serie(extractTitle(set), extractImage(set).orElse(""));
 
+            System.out.println(serie.getName());
             int processThisSet = reader.nextInt();
 
             if (processThisSet == 0) {

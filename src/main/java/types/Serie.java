@@ -19,6 +19,8 @@ public class Serie {
     String image;
     Map<Integer, Card> cards;
     boolean showNumbers;
+    int numberOfZeros;
+    String numberSuffix;
 
     @JsonCreator
     public Serie(
@@ -28,7 +30,9 @@ public class Serie {
             @JsonProperty("cards") Map<Integer, Card> cards,
             @JsonProperty("language") String language,
             @JsonProperty("image") String image,
-            @JsonProperty("showNumbers") boolean showNumbers) {
+            @JsonProperty("showNumbers") boolean showNumbers,
+            @JsonProperty("numberOfZeros") int numberOfZeros,
+            @JsonProperty("numberSuffix") String numberSuffix) {
         this.frenchName = frenchName;
         this.name = name;
         this.japaneseName = japaneseName;
@@ -36,6 +40,8 @@ public class Serie {
         this.image = image;
         this.language = language;
         this.showNumbers = showNumbers;
+        this.numberOfZeros = numberOfZeros;
+        this.numberSuffix = numberSuffix;
     }
 
     public Serie(String name, String image) {

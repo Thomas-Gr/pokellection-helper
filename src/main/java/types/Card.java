@@ -42,18 +42,18 @@ public class Card {
         this.wikiLink = wikiLink;
         this.picture = picture;
         this.pokemonNumber = pokemonNumber;
-        this.id = generateId(wikiLink, number, explanation);
+        this.id = generateId(name, wikiLink, number, explanation);
         this.count = count;
         this.explanation = explanation;
         this.frenchName = frenchName;
         this.japaneseName = japaneseName;
     }
 
-    private int generateId(String wikiLink, int number, String explanation) {
+    private int generateId(String name, String wikiLink, int number, String explanation) {
         if (explanation != null && explanation.trim().length() > 0) {
-            return (wikiLink + number + explanation).hashCode();
+            return (name + wikiLink + number + explanation).hashCode();
         } else {
-            return (wikiLink + number).hashCode();
+            return (name + wikiLink + number).hashCode();
         }
     }
 }

@@ -14,6 +14,8 @@ public enum Rarity {
     SUPER_RARE("SuperRare"),
     SUPER_RARE_HOLO("SuperRare Holo"),
     ULTRA_RARE_UNCOMMON("Ultra-Rare Uncommon"),
+    EX("Rare Holo ex"),
+    SHINING_HOLO("Shining Holo"),
     NONE("None");
 
     private static Map<String, Rarity> bindings = Stream.of(Rarity.values()).collect(toMap(a -> a.readableName, identity()));

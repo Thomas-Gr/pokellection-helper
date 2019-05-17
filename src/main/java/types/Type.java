@@ -22,6 +22,7 @@ public enum Type {
     ARTWORK("Artwork"),
     EXTRA_RULE("ExtraRule"),
     PASS_CARD("PassCard"),
+    NON_TCG("NonTcg")
     ;
 
     private static Map<String, Type> bindings = Stream.of(Type.values()).collect(toMap(a -> a.readableName, identity()));
