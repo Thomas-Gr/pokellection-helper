@@ -1199,11 +1199,19 @@ public class PokemonsData {
             .put("", "")
             .build();
 
-    public static final Pattern TRAINERS = Pattern.compile("(Blaine|Giovanni|Koga|Rocket|Sabrina|Erika|_____|Lt. Surge|Misty|Brock)'s (.*)");
+    public static final Pattern TRAINERS = Pattern.compile("(Blaine|Giovanni|Koga|Rocket|Sabrina|Erika|_____|Lt. Surge|Misty|Brock|Team Aqua|Team Magma)'s (.*)");
     public static final Pattern ZARBI = Pattern.compile("Unown (.)");
     public static final Pattern DARK = Pattern.compile("Dark (.*)");
     public static final Pattern LIGHT = Pattern.compile("Light (.*)");
     public static final Pattern SHINING = Pattern.compile("Shining (.*)");
+    public static final Pattern EX = Pattern.compile("(.*) ex");
+
+
+    public static final Map<Pattern, String> FRENCH_PATTERNS = ImmutableMap.of(
+        DARK, "%s obscur",
+        LIGHT, "%s lumineux",
+        SHINING, "%s brillant",
+        EX, "%s ex");
 
     public static final Map<String, String> TRAINERS_MAPPING = ImmutableMap.<String, String>builder()
             .put("Blaine", "Auguste")
@@ -1215,6 +1223,8 @@ public class PokemonsData {
             .put("Brock", "Pierre")
             .put("Misty", "Ondine")
             .put("Lt. Surge", "Major Bob")
+            .put("Team Aqua", "Team Aqua")
+            .put("Team Magma", "Team Magma")
             .put("_____", "_____")
             .build();
 
@@ -1229,6 +1239,8 @@ public class PokemonsData {
             .put("Brock", "de ")
             .put("Misty", "de ")
             .put("Lt. Surge", "du ")
+            .put("Team Aqua", "de la ")
+            .put("Team Magma", "de la ")
             .build();
 
     public static final Map<String, String> FRENCH_NAMES = ImmutableMap.<String, String>builder()
@@ -1307,6 +1319,8 @@ public class PokemonsData {
             .put("Misty", "Ondine")
             .put("Lt. Surge", "Major Bob")
             .put("_____", "_____")
+            .put("Team Aqua", "Team Aqua")
+            .put("Team Magma", "Team Magma")
             .build();
 
     public static final Map<String, String> JAPANESE_TRAINERS_MAPPING_PRONOUN = ImmutableMap.<String, String>builder()
@@ -1320,6 +1334,8 @@ public class PokemonsData {
             .put("Brock", "de ")
             .put("Misty", "de ")
             .put("Lt. Surge", "du ")
+            .put("Team Aqua", "de la  ")
+            .put("Team Magma", "de la ")
             .build();
 
     public static final Set<Type> NON_POKEMON_TYPES = ImmutableSet.of(

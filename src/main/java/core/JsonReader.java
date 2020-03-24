@@ -1,19 +1,5 @@
 package core;
 
-import static com.google.common.io.Files.write;
-import static java.util.Objects.requireNonNull;
-import static java.util.Optional.empty;
-import static utils.PokemonsData.DARK;
-import static utils.PokemonsData.FRENCH_NAMES;
-import static utils.PokemonsData.FRENCH_POKEMON_NAMES;
-import static utils.PokemonsData.LIGHT;
-import static utils.PokemonsData.POKEMONS_TO_FRENCH;
-import static utils.PokemonsData.POKEMONS_TO_JAPANESE;
-import static utils.PokemonsData.SHINING;
-import static utils.PokemonsData.TRAINERS;
-import static utils.PokemonsData.TRAINERS_MAPPING;
-import static utils.PokemonsData.TRAINERS_MAPPING_PRONOUN;
-import static utils.PokemonsData.ZARBI;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
@@ -26,6 +12,12 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.google.common.io.Files.write;
+import static java.util.Objects.requireNonNull;
+import static java.util.Optional.empty;
+import static utils.PokemonsData.*;
 
 public class JsonReader {
 
@@ -74,14 +66,6 @@ public class JsonReader {
         }
 
         for (Card card : serie.getCards().values()) {
-            //updatePictureName(serie, card);
-
-            if (card.getName().equals("Special")) {
-                //System.out.println(card);
-                //card.setName("Darkness Energy");
-                //card.setFrenchName("Énergie Obscurité");
-            }
-
             getFrenchName(card).ifPresent(card::setFrenchName);
             getJapaneseName(card).ifPresent(card::setJapaneseName);
 
@@ -158,22 +142,12 @@ public class JsonReader {
                     return Optional.of("Zarbi " + matcher.group(1));
                 }
 
-                matcher = DARK.matcher(card.getName());
+                for (Map.Entry<Pattern, String> pattern : FRENCH_PATTERNS.entrySet()) {
+                    matcher = pattern.getKey().matcher(card.getName());
 
-                if (matcher.find() && POKEMONS_TO_FRENCH.get(matcher.group(1)) != null) {
-                    return Optional.of(POKEMONS_TO_FRENCH.get(matcher.group(1)) + " obscur");
-                }
-
-                matcher = LIGHT.matcher(card.getName());
-
-                if (matcher.find() && POKEMONS_TO_FRENCH.get(matcher.group(1)) != null) {
-                    return Optional.of(POKEMONS_TO_FRENCH.get(matcher.group(1)) + " lumineux");
-                }
-
-                matcher = SHINING.matcher(card.getName());
-
-                if (matcher.find() && POKEMONS_TO_FRENCH.get(matcher.group(1)) != null) {
-                    return Optional.of(POKEMONS_TO_FRENCH.get(matcher.group(1)) + " brillant");
+                    if (matcher.find() && POKEMONS_TO_FRENCH.get(matcher.group(1)) != null) {
+                        return Optional.of(String.format(pattern.getValue(), POKEMONS_TO_FRENCH.get(matcher.group(1))));
+                    }
                 }
             }
         }
