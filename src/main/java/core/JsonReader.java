@@ -159,19 +159,16 @@ public class JsonReader {
         if (card.getJapaneseName() == null || card.getJapaneseName().isEmpty()) {
             if (POKEMONS_TO_JAPANESE.containsKey(card.getName())) {
                 return Optional.of(POKEMONS_TO_JAPANESE.get(card.getName()));
-            }
-            /*
-            else if (FRENCH_POKEMON_NAMES.containsKey(card.getName())) {
-                return Optional.of(FRENCH_POKEMON_NAMES.get(card.getName()));
+            } else if (JAPANESE_POKEMON_NAMES.containsKey(card.getName())) {
+                return Optional.of(JAPANESE_POKEMON_NAMES.get(card.getName()));
             } else {
                 Matcher matcher = TRAINERS.matcher(card.getName());
                 if (matcher.find()) {
-                    if (POKEMONS_TO_FRENCH.get(matcher.group(2)) != null) {
+                    if (POKEMONS_TO_JAPANESE.get(matcher.group(2)) != null) {
                         String name = String.format(
-                                "%s %s%s",
-                                POKEMONS_TO_FRENCH.get(matcher.group(2)),
-                                TRAINERS_MAPPING_PRONOUN.get(matcher.group(1)),
-                                TRAINERS_MAPPING.get(matcher.group(1)));
+                            "%sの%s",
+                            JAPANESE_TRAINERS_MAPPING.get(matcher.group(1)),
+                            POKEMONS_TO_JAPANESE.get(matcher.group(2)));
 
                         return Optional.of(name);
                     }
@@ -180,28 +177,17 @@ public class JsonReader {
                 matcher = ZARBI.matcher(card.getName());
 
                 if (matcher.find()) {
-                    return Optional.of("Zarbi " + matcher.group(1));
+                    return Optional.of("アンノーン " + matcher.group(1));
                 }
 
-                matcher = DARK.matcher(card.getName());
+                for (Map.Entry<Pattern, String> pattern : JAPANESE_PATTERNS.entrySet()) {
+                    matcher = pattern.getKey().matcher(card.getName());
 
-                if (matcher.find() && POKEMONS_TO_FRENCH.get(matcher.group(1)) != null) {
-                    return Optional.of(POKEMONS_TO_FRENCH.get(matcher.group(1)) + " obscur");
-                }
-
-                matcher = LIGHT.matcher(card.getName());
-
-                if (matcher.find() && POKEMONS_TO_FRENCH.get(matcher.group(1)) != null) {
-                    return Optional.of(POKEMONS_TO_FRENCH.get(matcher.group(1)) + " lumineux");
-                }
-
-                matcher = SHINING.matcher(card.getName());
-
-                if (matcher.find() && POKEMONS_TO_FRENCH.get(matcher.group(1)) != null) {
-                    return Optional.of(POKEMONS_TO_FRENCH.get(matcher.group(1)) + " brillant");
+                    if (matcher.find() && POKEMONS_TO_JAPANESE.get(matcher.group(1)) != null) {
+                        return Optional.of(String.format(pattern.getValue(), POKEMONS_TO_JAPANESE.get(matcher.group(1))));
+                    }
                 }
             }
-            //*/
         }
 
         return empty();

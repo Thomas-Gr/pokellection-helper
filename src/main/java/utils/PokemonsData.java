@@ -1206,11 +1206,16 @@ public class PokemonsData {
     public static final Pattern SHINING = Pattern.compile("Shining (.*)");
     public static final Pattern EX = Pattern.compile("(.*) ex");
 
-
     public static final Map<Pattern, String> FRENCH_PATTERNS = ImmutableMap.of(
         DARK, "%s obscur",
         LIGHT, "%s lumineux",
         SHINING, "%s brillant",
+        EX, "%s ex");
+
+    public static final Map<Pattern, String> JAPANESE_PATTERNS = ImmutableMap.of(
+        DARK, "わるい%s",
+        LIGHT, "やさしい%s",
+        SHINING, "ひかる%s",
         EX, "%s ex");
 
     public static final Map<String, String> TRAINERS_MAPPING = ImmutableMap.<String, String>builder()
@@ -1294,48 +1299,22 @@ public class PokemonsData {
 
 
     public static final Map<String, String> JAPANESE_POKEMON_NAMES = ImmutableMap.<String, String>builder()
-            .put("Grass Energy", "Énergie Plante")
-            .put("Lightning Energy", "Énergie Electrique")
-            .put("Water Energy", "Énergie Eau")
-            .put("Psychic Energy", "Énergie Psy")
-            .put("Fire Energy", "Énergie Feu")
-            .put("Metal Energy", "Énergie Métal")
-            .put("Fighting Energy", "Énergie Combat")
-            .put("Darkness Energy", "Énergie Obscurité")
-            .put("No.1 Trainer", "Entraineur No.1")
-            .put("No.2 Trainer", "Entraineur No.2")
-            .put("No.3 Trainer", "Entraineur No.3")
             .put("", "")
             .build();
 
     public static final Map<String, String> JAPANESE_TRAINERS_MAPPING = ImmutableMap.<String, String>builder()
-            .put("Blaine", "Auguste")
-            .put("Giovanni", "Giovanni")
-            .put("Koga", "Koga")
-            .put("Rocket", "Rocket")
-            .put("Sabrina", "Sabrina")
-            .put("Erika", "Erika")
-            .put("Brock", "Pierre")
-            .put("Misty", "Ondine")
-            .put("Lt. Surge", "Major Bob")
+            .put("Blaine", "カツラ")
+            .put("Giovanni", "サカキ")
+            .put("Koga", "キョウ")
+            .put("Rocket", "R団")
+            .put("Sabrina", "ナツメ")
+            .put("Erika", "エリカ")
+            .put("Brock", "タケシ")
+            .put("Misty", "カスミ")
+            .put("Lt. Surge", "マチス")
             .put("_____", "_____")
-            .put("Team Aqua", "Team Aqua")
-            .put("Team Magma", "Team Magma")
-            .build();
-
-    public static final Map<String, String> JAPANESE_TRAINERS_MAPPING_PRONOUN = ImmutableMap.<String, String>builder()
-            .put("Blaine", "d'")
-            .put("Giovanni", "de ")
-            .put("Koga", "de ")
-            .put("Rocket", "des ")
-            .put("Sabrina", "de ")
-            .put("Erika", "d'")
-            .put("_____", "de ")
-            .put("Brock", "de ")
-            .put("Misty", "de ")
-            .put("Lt. Surge", "du ")
-            .put("Team Aqua", "de la  ")
-            .put("Team Magma", "de la ")
+            .put("Team Aqua", "アクア団")
+            .put("Team Magma", "マグマ団")
             .build();
 
     public static final Set<Type> NON_POKEMON_TYPES = ImmutableSet.of(
