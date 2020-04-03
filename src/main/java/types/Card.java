@@ -9,18 +9,18 @@ import lombok.Data;
 @Data
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Card {
-    String name;
-    Type type;
-    Rarity rarity;
-    int number;
-    String wikiLink;
-    String picture;
-    int id;
-    int pokemonNumber;
-    int count;
-    String explanation;
-    String frenchName;
-    String japaneseName;
+    public String name;
+    public Type type;
+    public Rarity rarity;
+    public int number;
+    public String wikiLink;
+    public String picture;
+    public int id;
+    public int pokemonNumber;
+    public int count;
+    public String explanation;
+    public String frenchName;
+    public String japaneseName;
 
     @JsonCreator
     public Card(

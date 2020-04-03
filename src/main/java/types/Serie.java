@@ -12,15 +12,15 @@ import java.util.Map;
 @Data
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Serie {
-    String name;
-    String frenchName;
-    String japaneseName;
-    String language;
-    String image;
-    Map<Integer, Card> cards;
-    boolean showNumbers;
-    int numberOfZeros;
-    String numberSuffix;
+    public String name;
+    public String frenchName;
+    public String japaneseName;
+    public String language;
+    public  String image;
+    public  Map<Integer, Card> cards;
+    public boolean showNumbers;
+    public int numberOfZeros;
+    public String numberSuffix;
 
     @JsonCreator
     public Serie(
