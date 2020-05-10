@@ -21,6 +21,7 @@ public class Card {
     public String explanation;
     public String frenchName;
     public String japaneseName;
+    public String illustrator;
 
     @JsonCreator
     public Card(
@@ -34,7 +35,8 @@ public class Card {
             @JsonProperty("count") int count,
             @JsonProperty("explanation") String explanation,
             @JsonProperty("frenchName") String frenchName,
-            @JsonProperty("japaneseName") String japaneseName) {
+            @JsonProperty("japaneseName") String japaneseName,
+            @JsonProperty("illustrator") String illustrator) {
         this.name = name;
         this.type = type;
         this.rarity = rarity;
@@ -47,6 +49,7 @@ public class Card {
         this.explanation = explanation;
         this.frenchName = frenchName;
         this.japaneseName = japaneseName;
+        this.illustrator = illustrator;
     }
 
     private int generateId(String name, String wikiLink, int number, String explanation) {

@@ -131,7 +131,7 @@ public class RawTextExtractor {
                             number,
                             extractNumber(regexMatcher.group(7)),
                             regexMatcher.group(7),
-                            "", ""));
+                            "", "", ""));
                 } else {
                     result.add(new Card(
                             cardName,
@@ -143,7 +143,7 @@ public class RawTextExtractor {
                             number,
                             1,
                             description,
-                            "", ""));
+                            "", "", ""));
                 }
             }
         }

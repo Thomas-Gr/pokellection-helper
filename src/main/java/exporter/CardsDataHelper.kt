@@ -26,6 +26,7 @@ fun mapRawData(card: Card): List<String> {
         "=HYPERLINK(\"https://bulbapedia.bulbagarden.net/wiki/%s\"; \"%s\")".format(card.wikiLink, card.wikiLink)
       },
       escapeNumber(card.number),
+      card.illustrator?.toString().orEmpty(),
       card.name?.toString().orEmpty(),
       card.frenchName?.toString().orEmpty(),
       card.japaneseName?.toString().orEmpty(),
@@ -78,24 +79,24 @@ class CardsDataHelper {
       val cardNumberDiff = parseInt(a[2]) - parseInt(b[2])
       if (cardNumberDiff != 0) return cardNumberDiff
 
-      if (typeOrder[a[7]] == 15 && typeOrder[b[7]] == 10) {
+      if (typeOrder[a[8]] == 15 && typeOrder[b[8]] == 10) {
         return 1
-      } else if (typeOrder[a[7]] == 10 && typeOrder[b[7]] == 15) {
+      } else if (typeOrder[a[8]] == 10 && typeOrder[b[8]] == 15) {
         return -1
       }
 
-      val typeA = typeOrder[a[7]] ?: 0
-      val typeB = typeOrder[b[7]] ?: 0
+      val typeA = typeOrder[a[8]] ?: 0
+      val typeB = typeOrder[b[8]] ?: 0
       val typeDiff = typeA - typeB
       if (typeDiff != 0) return typeDiff
 
-      val pokemonNumberDiff = parseInt(a[6]) - parseInt(b[6])
+      val pokemonNumberDiff = parseInt(a[7]) - parseInt(b[7])
       if (pokemonNumberDiff != 0) return pokemonNumberDiff
 
       val nameDiff = a[3].compareTo(b[3])
       if (nameDiff != 0) return nameDiff
 
-      return a[10].compareTo(b[10])
+      return a[11].compareTo(b[11])
     }
   }
 }

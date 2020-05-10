@@ -1,16 +1,15 @@
 package exporter
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest
-import com.google.api.services.sheets.v4.model.Request
-import com.google.common.collect.ImmutableMap
-import exporter.util.*
 import exporter.util.SheetsCredentialProvider.getCredentials
+import exporter.util.addValuesToSheet
+import exporter.util.createHeader
+import exporter.util.createSheet
+import exporter.util.getAllSheetTitles
 import types.Serie
-import java.io.File
 
 private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
 private const val APPLICATION_NAME = "Pokellection helper"
@@ -30,18 +29,21 @@ class HomePageExporter {
           val escapedName = nameUpdater(it.name).replace("'",  "''")
           listOf(
               "=\"%s\"".format(nameUpdater(it.name)),
-              "=COUNTBLANK('%s'!E2:E%s)".format(escapedName, it.cards.size + 1),
+              "=COUNTIF('%s'!D2:D%s;\"*, *\")".format(escapedName, it.cards.size + 1),
               "=COUNTBLANK('%s'!F2:F%s)".format(escapedName, it.cards.size + 1),
+              "=COUNTBLANK('%s'!G2:G%s)".format(escapedName, it.cards.size + 1),
               "=HYPERLINK(\"#gid=%s\"; \"Go to\")".format(allSheetTitles[nameUpdater(it.name)] ?: "")
           )
         }
 
-    createHeader(spreadsheets, spreadsheetId, "'%s'!A1:E".format("Home"), listOf("Serie","Missing French names","Missing Japanese Names", "Link", "Comments"))
-    addValuesToSheet(spreadsheets, spreadsheetId, "'%s'!A1:E".format("Home"), data)
+    createHeader(spreadsheets, spreadsheetId, "'%s'!A1:F".format("Home"), listOf("Serie","Too many illustrators","Missing French names","Missing Japanese Names", "Link", "Comments"))
+    addValuesToSheet(spreadsheets, spreadsheetId, "'%s'!A1:F".format("Home"), data)
 
+    /*
     val createSheet = createSheet("Home")
     spreadsheets.batchUpdate(spreadsheetId, BatchUpdateSpreadsheetRequest()
         .setRequests(listOf(createSheet)))
         .execute()
+     */
   }
 }

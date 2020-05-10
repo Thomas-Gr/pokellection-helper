@@ -16,8 +16,8 @@ public class Serie {
     public String frenchName;
     public String japaneseName;
     public String language;
-    public  String image;
-    public  Map<Integer, Card> cards;
+    public String image;
+    public Map<Integer, Card> cards;
     public boolean showNumbers;
     public int numberOfZeros;
     public String numberSuffix;

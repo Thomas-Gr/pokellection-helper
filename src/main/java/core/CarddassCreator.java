@@ -198,7 +198,8 @@ public class CarddassCreator {
                     1,
                     "",
                     "",
-                    "");
+                    "",
+                "");
 
            serie.addCard(card);
         }
