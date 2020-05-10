@@ -1,7 +1,5 @@
 package utils;
 
-import static core.SerieExtractor.TYPE_OF_SET;
-import static java.util.regex.Pattern.DOTALL;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableList;
 import core.SerieExtractor;
@@ -9,7 +7,7 @@ import types.Card;
 import types.Rarity;
 import types.Type;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +15,9 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static core.SerieExtractor.TYPE_OF_SET;
+import static java.util.regex.Pattern.DOTALL;
 
 public class RawTextExtractor {
     private static Scanner reader = new Scanner(System.in);
@@ -34,6 +35,8 @@ public class RawTextExtractor {
     private static final Pattern IMAGE_EXTRACTOR = Pattern.compile("\\{\\{.*/header.*\\|image=(.*?)[|}]");
     private static final Pattern REDIRECT = Pattern.compile("(?m) *#(REDIRECT|redirect|Redirect:)[ \n]?\\[\\[(.*)]] *");
     private static final Pattern IMAGE_PATTERN = Pattern.compile("image[0-9]*=(.*?\\.(jpg|png))");
+
+    public static final String IMAGE_DELIMITER = ", ";
 
     public static List<String> extractHalfDeck(String text) {
         Matcher regexMatcher = SET_PATTERN.matcher(text);
@@ -164,27 +167,33 @@ public class RawTextExtractor {
         if (pictures.isEmpty()) {
             System.out.println("WARNING: No picture for: " + wikiContent);
             return "";
+        } else if (SerieExtractor.JOIN_ALL_POSSIBLE_IMAGES) {
+            return String.join(IMAGE_DELIMITER, pictures);
         } else if (pictures.size() == 1 || SerieExtractor.FAST) {
             return pictures.get(0);
         } else {
-            System.out.println("Multiple options for: " + cardName + " " + description);
+            return pickBestPictureManually(cardName, wikiLink, description, pictures);
+        }
+    }
 
-            int cardIndex = -1;
+    private static String pickBestPictureManually(String cardName, String wikiLink, String description, List<String> pictures) {
+        System.out.println("Multiple options for: " + cardName + " " + description);
 
-            while (cardIndex < 0 || cardIndex >= pictures.size()) {
-                for (int i = 0; i < pictures.size(); i++) {
-                    System.out.println(String.format("\t%s - %s", i, pictures.get(i)));
+        int cardIndex = -1;
 
-                    if (cardIndex > 0) openInBrowser("https://bulbapedia.bulbagarden.net/wiki/File:" + pictures.get(i));
-                }
+        while (cardIndex < 0 || cardIndex >= pictures.size()) {
+            for (int i = 0; i < pictures.size(); i++) {
+                System.out.println(String.format("\t%s - %s", i, pictures.get(i)));
 
-                if (cardIndex > 0) openInBrowser("https://bulbapedia.bulbagarden.net/wiki/" + wikiLink);
-
-                cardIndex = reader.nextInt();
+                if (cardIndex > 0) openInBrowser("https://bulbapedia.bulbagarden.net/wiki/File:" + pictures.get(i));
             }
 
-            return pictures.get(cardIndex);
+            if (cardIndex > 0) openInBrowser("https://bulbapedia.bulbagarden.net/wiki/" + wikiLink);
+
+            cardIndex = reader.nextInt();
         }
+
+        return pictures.get(cardIndex);
     }
 
     private static void openInBrowser(String link) {

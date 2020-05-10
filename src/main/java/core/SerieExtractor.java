@@ -4,9 +4,8 @@ import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.io.Files.write;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
-import static utils.RawTextExtractor.extractCards;
-import static utils.RawTextExtractor.extractImage;
-import static utils.RawTextExtractor.extractTitle;
+import static utils.RawTextExtractor.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import types.Card;
@@ -25,7 +24,8 @@ import java.util.Scanner;
 
 public class SerieExtractor {
     public static final String TYPE_OF_SET = "Setlist"; // Setlist // halfdecklist // Promo
-    public static final boolean FAST = false;
+    public static final boolean FAST = true;
+    public static final boolean JOIN_ALL_POSSIBLE_IMAGES = true;
     private static final boolean READS_FROM_BULBAPEDIA = true;
 
     private static final String SERIE = "EX_Ruby_%26_Sapphire_(TCG)";
@@ -38,16 +38,22 @@ public class SerieExtractor {
             "{{halfdecklist/entry|4|{{TCG ID|Totodile Half Deck|Croconaw|4}}|Water||1}}\n" +
             "{{halfdecklist/footer}}";
 
+    private static final boolean EXPORT_IMAGE_JS_FILE = false;
+
     private static Scanner reader = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
+        System.setProperty("http.agent", "Chrome");
+
         String page = READS_FROM_BULBAPEDIA
                 ? PageReader.readPage(INITIAL_URL)
                 : CONTENT;
 
-        List<String> sets = RawTextExtractor.extractSets(page);
+        extractPage(page);
+    }
 
-        System.setProperty("http.agent", "Chrome");
+    private static void extractPage(String page) throws IOException {
+        List<String> sets = RawTextExtractor.extractSets(page);
 
         Pokedex pokedex = new Pokedex();
 
@@ -55,10 +61,12 @@ public class SerieExtractor {
             Serie serie = new Serie(extractTitle(set), extractImage(set).orElse(""));
 
             System.out.println(serie.getName());
-            int processThisSet = reader.nextInt();
+            if (!FAST) {
+                int processThisSet = reader.nextInt();
 
-            if (processThisSet == 0) {
-                continue;
+                if (processThisSet == 0) {
+                    continue;
+                }
             }
 
             extractCards(set).forEach(serie::addCard);
@@ -77,19 +85,25 @@ public class SerieExtractor {
                     .map(a -> format("'%s' : require('../../../resources/images/cards/%s')", a, a))
                     .collect(joining(",\n"));
 
-            File file2 = new File(format("out/jsFiles/%s.js", serie.getName()));
-            write(format("export default ChangeName =\n  {%s}", content), file2, UTF_8);
+            if (EXPORT_IMAGE_JS_FILE) {
+                File file2 = new File(format("out/jsFiles/%s.js", serie.getName()));
+                write(format("export default ChangeName =\n  {%s}", content), file2, UTF_8);
+            }
 
             for (Card card : serie.getCards().values()) {
-                String cardName = card.getPicture();
-                File f = new File("out/images/cards/" + cardName.replace('é', 'e'));
-                if (!f.exists()) {
-                    try {
-                        downloadImage(cardName);
-                    } catch (Exception e) {
-                        System.out.println(cardName + " doesn't exist");
+                String[] images = card.getPicture().split(IMAGE_DELIMITER);
+                System.out.println(format("(exporting %d images)", images.length));
+                for (String cardName : images) {
+                    File f = new File("out/images/cards/" + cardName.replace('é', 'e'));
+                    if (!f.exists()) {
+                        try {
+                            downloadImage(cardName);
+                        } catch (Exception e) {
+                            System.out.println(cardName + " doesn't exist");
+                        }
                     }
                 }
+
             }
 
             if (!serie.getImage().equals("")) {
