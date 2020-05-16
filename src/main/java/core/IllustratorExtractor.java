@@ -2,8 +2,6 @@ package core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import types.Card;
 import types.Serie;
 import utils.PageReader;
@@ -11,27 +9,22 @@ import utils.PageReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static com.google.common.io.Files.write;
+import static common.ConstantsKt.APP_DATA_UPDATE_DESTINATION_PATH;
+import static common.ConstantsKt.APP_DATA_SOURCE_PATH;
 import static java.util.Objects.requireNonNull;
-import static java.util.Optional.empty;
-import static utils.PokemonsData.*;
 
 public class IllustratorExtractor {
-
-  private static final String SOURCE_PATH = "xxx";
-  private static final String DESTINATION = "xxx";
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
   public static void main(String[] args) throws IOException {
-    listFilesForFolder(new File(SOURCE_PATH));
+    listFilesForFolder(new File(APP_DATA_SOURCE_PATH));
   }
 
   private static void listFilesForFolder(final File folder) throws IOException {
@@ -41,7 +34,7 @@ public class IllustratorExtractor {
 
         String formattedSerie = new ObjectMapper().writeValueAsString(serie);
 
-        File file = new File(String.format("%s/%s", DESTINATION, fileEntry.getName()));
+        File file = new File(String.format("%s/%s", APP_DATA_UPDATE_DESTINATION_PATH, fileEntry.getName()));
         write(formattedSerie, file, Charsets.UTF_8);
       }
     }

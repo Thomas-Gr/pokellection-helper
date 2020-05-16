@@ -15,14 +15,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.google.common.io.Files.write;
+import static common.ConstantsKt.APP_DATA_UPDATE_DESTINATION_PATH;
+import static common.ConstantsKt.APP_DATA_SOURCE_PATH;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.empty;
 import static utils.PokemonsData.*;
 
 public class JsonReader {
 
-    private static final String SOURCE_PATH = "/Users/grillett/dev/Pokellection/resources/series";
-    private static final String DESTINATION = "/Users/grillett/dev/Pokellection/resources/series";
     private static final Map<Integer, Integer> CARD_TO_IMAGE = ImmutableMap.<Integer, Integer>builder()
             .put(-1592629316, 32)
             .build();
@@ -33,7 +33,7 @@ public class JsonReader {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static void main(String[] args) throws IOException {
-        listFilesForFolder(new File(SOURCE_PATH));
+        listFilesForFolder(new File(APP_DATA_SOURCE_PATH));
     }
 
     private static void listFilesForFolder(final File folder) throws IOException {
@@ -43,7 +43,7 @@ public class JsonReader {
 
                 String formattedSerie = new ObjectMapper().writeValueAsString(serie);
 
-                File file = new File(String.format("%s/%s", DESTINATION, fileEntry.getName()));
+                File file = new File(String.format("%s/%s", APP_DATA_UPDATE_DESTINATION_PATH, fileEntry.getName()));
                 write(formattedSerie, file, Charsets.UTF_8);
             }
         }

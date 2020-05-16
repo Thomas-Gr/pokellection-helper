@@ -1,6 +1,7 @@
 package core;
 
 import static com.google.common.io.Files.write;
+import static common.ConstantsKt.APP_DATA_UPDATE_DESTINATION_FOLDER_PATH;
 import static java.util.Objects.requireNonNull;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,8 +18,6 @@ import java.util.Set;
 
 public class PokemonGrouper {
 
-    private static final String SOURCE_PATH = "/Users/grillett/dev/Pokellection/resources/series/";
-    private static final String DESTINATION = "/Users/grillett/dev/Pokellection/resources/";
     private static final String FILE_NAME = "appearances.json";
 
     private static final HashMap<Integer, Map<String, Set<Integer>>> POKEMON_TO_CARDS = new HashMap<>();
@@ -26,7 +25,7 @@ public class PokemonGrouper {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static void main(String[] args) throws IOException {
-        readAppearances(new File(DESTINATION));
+        readAppearances(new File(APP_DATA_UPDATE_DESTINATION_FOLDER_PATH));
         //extractAppearancesFromSourceFiles(new File(SOURCE_PATH));
         //computeMostCommonPokemon(POKEMON_TO_CARDS);
     }
@@ -49,7 +48,7 @@ public class PokemonGrouper {
 
         String formattedResult = new ObjectMapper().writeValueAsString(POKEMON_TO_CARDS);
 
-        File file = new File(String.format("%s/%s", DESTINATION, "appearances.json"));
+        File file = new File(String.format("%s/%s", APP_DATA_UPDATE_DESTINATION_FOLDER_PATH, "appearances.json"));
         write(formattedResult, file, Charsets.UTF_8);
     }
 

@@ -1,16 +1,19 @@
 package exporter
 
+import common.APP_DATA_SOURCE_PATH
+import common.SPREADSHEET_ID
 import java.io.File
-
-private val spreadsheetId = "xxxxx"
 
 fun main() {
   val exporter = Exporter()
+  val homePageExporter = HomePageExporter()
 
-  val allSeries = getAllSeries(File("xxxx"))
+  val allSeries = getAllSeries(File(APP_DATA_SOURCE_PATH))
+
+  homePageExporter.exportToSheet(SPREADSHEET_ID, allSeries)
 
   allSeries.forEach {
-      exporter.exportToSheet(spreadsheetId, it)
+      exporter.exportToSheet(SPREADSHEET_ID, it)
       Thread.sleep(5000L)
   }
 

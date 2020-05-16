@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.sheets.v4.Sheets
+import common.APP_DATA_SOURCE_PATH
+import common.SPREADSHEET_ID
 import exporter.util.*
 import exporter.util.SheetsCredentialProvider.getCredentials
 import java.io.File
@@ -26,9 +28,6 @@ val EXPANSIONS_BINDINGS = mapOf(
     "Pokémon-e Starter Deck" to "Pokemon-e Starter Deck"
 )
 
-private val DATA = "xxx"
-private val SPREADSHEET_ID = "xxx"
-
 data class Data(val illustrator: String)
 fun main() {
   Importer().import(SPREADSHEET_ID)
@@ -41,7 +40,7 @@ class Importer {
         .build()
         .spreadsheets()
 
-    val allSeries = getAllSeries(File(DATA))
+    val allSeries = getAllSeries(File(APP_DATA_SOURCE_PATH))
 
     val dataFromSheets = getAllSheetTitles(spreadsheets, spreadsheetId)
         .keys
@@ -62,7 +61,8 @@ class Importer {
 
       val formattedSerie = ObjectMapper().writeValueAsString(serie)
 
-      File("%s/%s.json".format(DATA, EXPANSIONS_BINDINGS[serie.name] ?: serie.name)).writeText(formattedSerie)
+      File("%s/%s.json".format(APP_DATA_SOURCE_PATH, EXPANSIONS_BINDINGS[serie.name] ?: serie.name))
+          .writeText(formattedSerie)
     }
 
     println(dataFromSheets)

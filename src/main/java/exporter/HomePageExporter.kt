@@ -3,11 +3,9 @@ package exporter
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.sheets.v4.Sheets
-import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest
 import exporter.util.SheetsCredentialProvider.getCredentials
 import exporter.util.addValuesToSheet
 import exporter.util.createHeader
-import exporter.util.createSheet
 import exporter.util.getAllSheetTitles
 import types.Serie
 
