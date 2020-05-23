@@ -199,6 +199,7 @@ public class CarddassCreator {
                     "",
                     "",
                     "",
+                "",
                 "");
 
            serie.addCard(card);
