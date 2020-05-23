@@ -36,7 +36,7 @@ class Exporter {
     val alternateColorRangeId = getAlternateColorRangeId(spreadsheets, spreadsheetId, name)
 
     val requests = mutableListOf<Request>()
-    requests.add(clearSheet(sheetId));
+    requests.add(clearSheet(sheetId))
     requests.addAll(removeAllConditionalFormatting(sheetId, numberOfConditionalFormatting))
     if (alternateColorRangeId != 0) {
       requests.add(deleteAlternateColors(alternateColorRangeId))

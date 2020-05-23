@@ -13,7 +13,7 @@ import java.io.File
 private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
 private const val APPLICATION_NAME = "Pokellection helper"
 private val HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport()
-private const val RANGE = "!A2:M"
+private const val RANGE = "!A1:M"
 
 val EXPANSIONS_BINDINGS = mapOf(
     "Crossing the Ruins..." to "Crossing the Ruins",
@@ -28,7 +28,12 @@ val EXPANSIONS_BINDINGS = mapOf(
     "Pokémon-e Starter Deck" to "Pokemon-e Starter Deck"
 )
 
-data class Data(val illustrator: String)
+data class Data(
+    val illustrator: String,
+    val name: String,
+    val frenchName: String,
+    val japaneseName: String
+)
 fun main() {
   Importer().import(SPREADSHEET_ID)
 }
@@ -55,6 +60,9 @@ class Importer {
         for (card in serie.cards.values) {
           if (updatedData.containsKey(card.id)) {
             card.illustrator = updatedData.getValue(card.id).illustrator
+            card.name = updatedData.getValue(card.id).name
+            card.frenchName = updatedData.getValue(card.id).frenchName
+            card.japaneseName = updatedData.getValue(card.id).japaneseName
           }
         }
       }
@@ -76,7 +84,11 @@ class Importer {
         .execute()
         .getValues()
         .filter { it.size >= 13 }
-        .map {it[12].toString().toInt() to Data(it[3].toString())}
+        .map {it[12].toString().toInt() to Data(
+            it[3].toString(),
+            it[4].toString(),
+            it[5].toString(),
+            it[6].toString())}
         .toMap()
   }
 
