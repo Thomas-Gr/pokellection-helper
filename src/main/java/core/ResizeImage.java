@@ -13,7 +13,7 @@ import java.io.IOException;
 public class ResizeImage {
 
     public static void main(String [] args) throws IOException {
-        resizeImage("series", 40, false);
+        resizeImage("icons", 40, false);
         resizeImage("cards", 250, true);
     }
 

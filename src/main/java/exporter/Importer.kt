@@ -13,7 +13,7 @@ import java.io.File
 private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
 private const val APPLICATION_NAME = "Pokellection helper"
 private val HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport()
-private const val RANGE = "!A1:M"
+private const val RANGE = "!A2:M"
 
 val EXPANSIONS_BINDINGS = mapOf(
     "Crossing the Ruins..." to "Crossing the Ruins",

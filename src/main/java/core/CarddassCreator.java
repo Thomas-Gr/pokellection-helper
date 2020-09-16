@@ -190,6 +190,7 @@ public class CarddassCreator {
             Card card = new Card(
                     data[1],
                     Type.NON_TCG,
+                    null,
                     Rarity.NONE,
                     data[0].equals("000") ? -42 : Integer.parseInt(data[0]),
                     "",

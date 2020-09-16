@@ -11,6 +11,7 @@ private val objectMapper = ObjectMapper()
 fun getAllSeries(folder: File): List<Serie> {
   return folder.walk()
       .filter { !it.isDirectory }
+      .filter { !it.name.contains("DS_Store") }
       .map { objectMapper.readValue(it, Serie::class.java) }
       .toList()
 }

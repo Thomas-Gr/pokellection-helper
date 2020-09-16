@@ -1205,17 +1205,20 @@ public class PokemonsData {
     public static final Pattern LIGHT = Pattern.compile("Light (.*)");
     public static final Pattern SHINING = Pattern.compile("Shining (.*)");
     public static final Pattern EX = Pattern.compile("(.*) ex");
+    public static final Pattern DELTA = Pattern.compile("(.*) δ");
 
     public static final Map<Pattern, String> FRENCH_PATTERNS = ImmutableMap.of(
         DARK, "%s obscur",
         LIGHT, "%s lumineux",
         SHINING, "%s brillant",
+        DELTA, "%s δ",
         EX, "%s ex");
 
     public static final Map<Pattern, String> JAPANESE_PATTERNS = ImmutableMap.of(
         DARK, "わるい%s",
         LIGHT, "やさしい%s",
         SHINING, "ひかる%s",
+        DELTA, "%s δ",
         EX, "%s ex");
 
     public static final Map<String, String> TRAINERS_MAPPING = ImmutableMap.<String, String>builder()

@@ -23,13 +23,6 @@ import static utils.PokemonsData.*;
 
 public class JsonReader {
 
-    private static final Map<Integer, Integer> CARD_TO_IMAGE = ImmutableMap.<Integer, Integer>builder()
-            .put(-1592629316, 32)
-            .build();
-
-    private static final String SERIE_NAME = "Pokémon Web";
-    private static final String SERIE_PICTURES_PREFIX = "web-";
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static void main(String[] args) throws IOException {
@@ -38,7 +31,7 @@ public class JsonReader {
 
     private static void listFilesForFolder(final File folder) throws IOException {
         for (final File fileEntry : requireNonNull(folder.listFiles())) {
-            if (!fileEntry.isDirectory()) {
+            if (!fileEntry.isDirectory() && !fileEntry.getName().contains("DS_Store")) {
                 Serie serie = process(objectMapper.readValue(fileEntry, Serie.class));
 
                 String formattedSerie = new ObjectMapper().writeValueAsString(serie);
@@ -49,23 +42,14 @@ public class JsonReader {
         }
     }
 
-    private static ImmutableSet<String> RARITIES = ImmutableSet.of("NONE",
-            "COMMON",
-            "UNCOMMON",
-            "RARE", "RARE_HOLO");
-
     private static Serie process(Serie serie) {
-
-
         if (FRENCH_NAMES.containsKey(serie.getName())) {
             serie.setFrenchName(FRENCH_NAMES.get(serie.getName()));
         }
 
-        if (serie.getJapaneseName() == null) {
-            // TODO
-        }
-
         for (Card card : serie.getCards().values()) {
+            card.setPicture(card.getPicture().replaceAll("é", "e"));
+
             getFrenchName(card).ifPresent(card::setFrenchName);
             getJapaneseName(card).ifPresent(card::setJapaneseName);
 
@@ -81,39 +65,9 @@ public class JsonReader {
                 card.setWikiLink(null);
             }
 
-            /*
-            if (card.getFrenchName() == null) {
-                System.out.println(String.format(
-                        "%s\t%s\t%s\t%s\t%s\thttps://bulbapedia.bulbagarden.net/wiki/%s",
-                        serie.getName(),
-                        card.getId(),
-                        card.getPokemonNumber(),
-                        card.getName(),
-                        card.getRarity(),
-                        card.getWikiLink()));
-            }
-            */
-
-            if (card.getJapaneseName() == null) {
-                //System.out.println(card.getName());
-            }
-
         }
 
         return serie;
-    }
-
-    private static void updatePictureName(Serie serie, Card card) {
-        if (serie.getName().equals(SERIE_NAME) && CARD_TO_IMAGE.containsKey(card.getId())) {
-            String image = String.format(SERIE_PICTURES_PREFIX + "%03d.jpg", CARD_TO_IMAGE.get(card.getId()));
-            //String image = String.format("%s.jpg", CARD_TO_IMAGE.get(card.getId()));
-            //System.out.println(String.format("'%s' : require('../../../resources/images/cards/%s'),", image, image));
-            card.setPicture(image);
-        }
-
-        if (serie.getName().equals(SERIE_NAME)) {
-            System.out.println(String.format("'%s' : require('../../../resources/images/cards/%s'),", card.getPicture(), card.getPicture()));
-        }
     }
 
     private static Optional<String> getFrenchName(Card card) {

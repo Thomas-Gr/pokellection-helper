@@ -11,6 +11,7 @@ import lombok.Data;
 public class Card {
     public String name;
     public Type type;
+    public Type type2;
     public Rarity rarity;
     public int number;
     public String wikiLink;
@@ -28,6 +29,7 @@ public class Card {
     public Card(
             @JsonProperty("name") String name,
             @JsonProperty("type") Type type,
+            @JsonProperty("type2") Type type2,
             @JsonProperty("rarity") Rarity rarity,
             @JsonProperty("number") int number,
             @JsonProperty("wikiLink") String wikiLink,
@@ -41,6 +43,7 @@ public class Card {
             @JsonProperty("bulbapediaId") String bulbapediaId) {
         this.name = name;
         this.type = type;
+        this.type2 = type2;
         this.rarity = rarity;
         this.number = number;
         this.wikiLink = wikiLink;

@@ -23,6 +23,8 @@ public class RawTextExtractor {
     private static Scanner reader = new Scanner(System.in);
 
     private static final Pattern SET_PATTERN = Pattern.compile(String.format("(\\{\\{%s/header.*?|\\{\\{%s/header.*?)\\{\\{(%s|%s)/footer", TYPE_OF_SET, TYPE_OF_SET.toLowerCase(), TYPE_OF_SET, TYPE_OF_SET.toLowerCase()), DOTALL);
+    private static final Pattern STAR_PATTERN = Pattern.compile(String.format("\\{\\{(%s|%s)/entry\\|(.*)\\|\\[\\[(.*) \\((.*)\\)\\|(.*)]] \\{\\{Star}}.*\\|(.*)\\|(.*)\\|(.*)\\|(.*)}}", TYPE_OF_SET, TYPE_OF_SET.toLowerCase()));
+    private static final Pattern STAR_PATTERN_2 = Pattern.compile(String.format("\\{\\{(%s|%s)/entry\\|(.*)\\|\\[\\[(.*) \\((.*)\\)\\|(.*)]] \\{\\{Star}}.*\\|(.*)\\|(.*)\\|(.*)}}", TYPE_OF_SET, TYPE_OF_SET.toLowerCase()));
     private static final Pattern ENTRY_PATTERN = Pattern.compile(String.format("\\{\\{(%s|%s)/entry\\|(.*)\\|\\{\\{(.*)}}(.*)\\|(.*)\\|(.*)\\|(.*)\\|(.*)}}", TYPE_OF_SET, TYPE_OF_SET.toLowerCase()));
     private static final Pattern ENTRY_PATTERN_2 = Pattern.compile(String.format("\\{\\{(%s|%s)/entry\\|(.*)\\|\\{\\{(.*)}}(.*)\\|(.*)\\|(.*)\\|(.*)}}", TYPE_OF_SET, TYPE_OF_SET.toLowerCase()));
     private static final String EMPTY_LINE_PATTERN = "(?m)^[ \t]*\r?\n";
@@ -66,21 +68,49 @@ public class RawTextExtractor {
         String[] lines = text.split(NEW_LINE);
         List<Card> result = new ArrayList<>();
         for (String line : lines) {
+            boolean isStarCard = false;
             String s = line.toLowerCase();
 
             if (s.startsWith(ENTRY_START)) {
                 Matcher regexMatcher = ENTRY_PATTERN.matcher(line);
                 if (!regexMatcher.find()) {
                     regexMatcher = ENTRY_PATTERN_2.matcher(line);
-
                     if (!regexMatcher.find()) {
-                        continue;
+                        regexMatcher = STAR_PATTERN.matcher(line);
+                        isStarCard = true;
+                        if (!regexMatcher.find()) {
+                            if (!regexMatcher.find()) {
+                                regexMatcher = STAR_PATTERN_2.matcher(line);
+                                isStarCard = true;
+                                if (!regexMatcher.find()) {
+                                    throw new IllegalStateException("Pattern not recognized");
+                                }
+                            }
+                        }
                     }
                 }
 
-                String[] split = regexMatcher.group(3).split("\\|");
 
-                String wikiLink = stringToLink(extractLink(regexMatcher.group(3).replaceAll("&", "%26")));
+                /*
+                for (int i = 0; i < regexMatcher.groupCount(); i++) {
+                    System.out.println(regexMatcher.group(i));
+                }
+                //*/
+
+                String wikiLink;
+                String cardName;
+                int shift = 0;
+                if (isStarCard) {
+                    cardName = regexMatcher.group(3);
+                    wikiLink = stringToLink(String.format(EDIT_PAGE_LINK_LENGTH_2, cardName, regexMatcher.group(4)));
+                    shift = 1;
+                } else {
+                    String[] split = regexMatcher.group(3).split("\\|");
+
+                    wikiLink = stringToLink(extractLink(regexMatcher.group(3).replaceAll("&", "%26")));
+                    cardName = split.length == 2 ? split[1] : split[2];
+                }
+
                 String wikiContent = PageReader.readPage(wikiLink);
 
                 if (wikiContent.toUpperCase().trim().startsWith("#REDIRECT")) {
@@ -95,15 +125,13 @@ public class RawTextExtractor {
                         .replace("https://bulbapedia.bulbagarden.net/w/index.php?title=", "")
                         .replace("&action=edit", "");
 
-                String cardName = split.length == 2 ? split[1] : split[2];
-
-                String additionalName = regexMatcher.group(4).trim();
+                String additionalName = isStarCard ? "" : regexMatcher.group(4).trim();
 
                 if (additionalName.length() > 0) {
                     cardName += " " + additionalName;
                 }
 
-                String description = regexMatcher.groupCount() >= 8 ? regexMatcher.group(8) : "";
+                String description = regexMatcher.groupCount() >= 8 + shift ? regexMatcher.group(8 + shift) : "";
 
                 String picture = getPictureName(wikiContent, cardName, actualWikiLink, description);
 
@@ -111,36 +139,43 @@ public class RawTextExtractor {
 
                 ImmutableBiMap<String, Integer> pokemonList = PokemonsData.POKEMONS.inverse();
 
-                int number = -42;
+                int pokemonNumber = -42;
                 for (String word : words) {
                     if (pokemonList.containsKey(word)) {
-                        number = pokemonList.get(word);
+                        pokemonNumber = pokemonList.get(word);
 
                         break;
                     }
                 }
 
+                Type type = Type.fromName(regexMatcher.group(5 + shift));
+                Type type2 = !regexMatcher.group(6 + shift).isEmpty() ? Type.fromName(regexMatcher.group(6 + shift)) : null;
+                int cardNumber = extractNumber(regexMatcher.group(2));
+
                 if (TYPE_OF_SET.equals("halfdecklist")) {
                     result.add(new Card(
                             cardName,
-                            Type.fromName(regexMatcher.group(5)),
+                            type,
+                            type2,
                             Rarity.NONE,
-                            extractNumber(regexMatcher.group(2)),
+                            cardNumber,
                             actualWikiLink,
                             picture,
-                            number,
-                            extractNumber(regexMatcher.group(7)),
-                            regexMatcher.group(7),
+                            pokemonNumber,
+                            extractNumber(regexMatcher.group(7 + shift)),
+                            regexMatcher.group(7 + shift),
                             "", "", "", picture));
                 } else {
+                    Rarity rarity = Rarity.fromName(regexMatcher.group(7 + shift));
                     result.add(new Card(
                             cardName,
-                            Type.fromName(regexMatcher.group(5)),
-                            Rarity.fromName(regexMatcher.group(7)),
-                            extractNumber(regexMatcher.group(2)),
+                            type,
+                            type2,
+                            rarity,
+                            cardNumber,
                             actualWikiLink,
                             picture,
-                            number,
+                            pokemonNumber,
                             1,
                             description,
                             "", "", "", picture));

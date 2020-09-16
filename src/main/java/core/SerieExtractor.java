@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.joining;
 import static utils.RawTextExtractor.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.io.FileUtils;
 import types.Card;
 import types.Pokedex;
@@ -28,28 +29,30 @@ public class SerieExtractor {
     public static final boolean JOIN_ALL_POSSIBLE_IMAGES = true;
     private static final boolean READS_FROM_BULBAPEDIA = true;
 
-    private static final String SERIE = "EX_Ruby_%26_Sapphire_(TCG)";
-    private static final String INITIAL_URL = format("https://bulbapedia.bulbagarden.net/w/index.php?title=%s&action=edit", SERIE);
+    private static final List<String> SERIES = ImmutableList.of(
+        "PokéPark_Premium_Files_(TCG)"
+        );
 
-    private static final String CONTENT = "{{halfdecklist/header|title=Totodile Half Deck|type=Water|symbol=yes|image=SetSymbolTotodileIntroPackNeo.png}}\n" +
-            "{{halfdecklist/entry|1|{{TCG ID|Totodile Half Deck|Pikachu|1}}|Lightning||1}}\n" +
-            "{{halfdecklist/entry|2|{{TCG ID|Totodile Half Deck|Marill|2}}|Water||1}}\n" +
-            "{{halfdecklist/entry|3|{{TCG ID|Totodile Half Deck|Hoothoot|3}}|Colorless||1}}\n" +
-            "{{halfdecklist/entry|4|{{TCG ID|Totodile Half Deck|Croconaw|4}}|Water||1}}\n" +
-            "{{halfdecklist/footer}}";
+    private static final String INITIAL_URL = "https://bulbapedia.bulbagarden.net/w/index.php?title=%s&action=edit";
 
-    private static final boolean EXPORT_IMAGE_JS_FILE = false;
+    private static final String CONTENT = "";
+
+    private static final boolean EXPORT_IMAGE_JS_FILE = true;
 
     private static Scanner reader = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
         System.setProperty("http.agent", "Chrome");
 
-        String page = READS_FROM_BULBAPEDIA
-                ? PageReader.readPage(INITIAL_URL)
-                : CONTENT;
+        if (READS_FROM_BULBAPEDIA) {
+            for (String serie : SERIES) {
+                String page = PageReader.readPage(format(INITIAL_URL, serie));
 
-        extractPage(page);
+                extractPage(page);
+            }
+        } else {
+            extractPage(CONTENT);
+        }
     }
 
     private static void extractPage(String page) throws IOException {
@@ -57,6 +60,7 @@ public class SerieExtractor {
 
         Pokedex pokedex = new Pokedex();
 
+        int numberOfSets = 0;
         for (String set : sets) {
             Serie serie = new Serie(extractTitle(set), extractImage(set).orElse(""));
 
@@ -68,6 +72,11 @@ public class SerieExtractor {
                     continue;
                 }
             }
+
+            if (numberOfSets++ < 2) {
+                //continue;
+            }
+            //*/
 
             extractCards(set).forEach(serie::addCard);
 
