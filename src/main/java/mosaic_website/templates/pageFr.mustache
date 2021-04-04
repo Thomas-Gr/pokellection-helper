@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>PokéCards Mosaic - {{pageTitle}}</title>
+		<meta name="description" content="Cartes Pokémon faites de cartes Pokémon.">
+        <meta name="keywords" content="Pokemon, Pokémon, Pokémon cards, Pokemon cards, TCG, mosaic, Pikachu, Mewtwo, Charizard">
+        <meta name="author" content="Arca`">
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../assets/css/main_min.css" />
+		<link rel="icon" href="../images/favicon.png">
+
+        <meta property="og:title" content="PokéCards Mosaic - {{pageTitle}}"/>
+        <meta name="twitter:title" content="PokéCards Mosaic - {{pageTitle}}">
+        <meta property="og:type" content="Art"/>
+        <meta property="og:url" content="https://www.pokecards-mosaic.com"/>
+        <meta property="og:image" content="https://www.pokecards-mosaic.com/images/thumbnail.png"/>
+        <meta property="og:site_name" content="PokeCards Mosaic"/>
+        <meta property="og:description" content="Cartes Pokémon faites de cartes Pokémon."/>
+        <meta name="twitter:description" content="Cartes Pokémon faites de cartes Pokémon.">
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:creator" content="@Arca____">
+        <meta name="twitter:image" content="https://www.pokecards-mosaic.com/images/thumbnail_twitter.png"/>
+        <meta name="twitter:card" content="summary_large_image"/>
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-33225443-2"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-33225443-2');
+        </script>
+	</head>
+	<body id="top">
+        <div class="inner">
+            <section id="banner">
+                <div>
+                  <img src="../images/logo.png" alt="Pokécards Mosaic">
+                </div>
+            </section>
+        </div>
+
+		<div id="main">
+			<div class="inner">
+				<h1>Cartes</h1>
+				<div class="thumbnails">
+				    {{#cards}}
+                    <div class="box">
+                        <a href="card{{id}}.html" class="image fit"><img src="../images/min/{{id}}.jpg" alt="{{name}}" /></a>
+                        <div class="inner">
+                            <h3>{{name}}</h3>
+                            <p>Artiste: <a href="{{id_artist}}.html">{{artist}}</a></p>
+                            <a href="card{{id}}.html" class="button fit">Ouvrir la mosaique</a>
+                        </div>
+                    </div>
+                    {{/cards}}
+				</div>
+
+				<h1>Toutes les cartes</h1>
+
+				<div id="discover">
+					<div class="search">
+						<h2>Pokémon</h2>
+
+						<form>
+							<input type="hidden" class="type" value="pokemon">
+						    <select class="id">
+						       {{#pokemon_options}}
+				               <option value="{{value}}" {{selected}}>{{text}}</option>
+				               {{/pokemon_options}}
+				            </select>
+
+				            <input type="submit" value="Search">
+			        	</form>
+					</div>
+
+					<div class="search">
+						<h2>Artistes</h2>
+
+						<form>
+							<input type="hidden" class="type" value="artist">
+						    <select class="id">
+						       {{#artist_options}}
+				               <option value="{{value}}" {{selected}}>{{text}}</option>
+				               {{/artist_options}}
+				             </select>
+
+				            <input type="submit" value="Search">
+			        	</form>
+					</div>
+
+					<div class="search">
+						<h2>Séries</h2>
+
+						<form>
+							<input type="hidden" class="type" value="expansion">
+						    <select class="id">
+						       {{#expansion_options}}
+						       <optgroup label="{{title}}">
+						        {{#options}}
+						            <option value="{{value}}" {{selected}}>{{text}}</option>
+						        {{/options}}
+						       </optgroup>
+				               {{/expansion_options}}
+				             </select>
+
+				            <input type="submit" value="Search">
+			        	</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer id="footer">
+			<div class="inner">
+				<h2>Parlez de nous sur les réseaux sociaux</h2>
+
+				<ul class="icons">
+					<li><a target="_blank" href="https://twitter.com/intent/tweet?text=https://www.pokecards-mosaic.com/fr/ PokéCards Mosaic" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.pokecards-mosaic.com/fr/" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+				</ul>
+
+				<p class="copyright">© 1995–2020 Nintendo/Creatures Inc./GAME FREAK inc. Pokémon, Pokémon character names are trademarks of Nintendo. All rights to their respective copyright holders. Pokemon Cards mosaics are copyright of the owners of this site.</p>
+				<p class="copyright">Auteur: <a href="https://www.grilletta.fr">Arca`</a> | Bannière et retouches: Oshobo | Core design: <a href="https://templated.co">Templated</a> | Scans: <a href="http://bulbapedia.bulbagarden.net/">Bulbapedia</a>, <a href="https://collectorviper.livejournal.com/">Viper Fox</a></p>
+			</div>
+		</footer>
+
+		<script src="../assets/js/jquery.min.js"></script>
+		<script src="../assets/js/jquery.scrolly.min.js"></script>
+		<script src="../assets/js/jquery.poptrox.min.js"></script>
+		<script src="../assets/js/skel.min.js"></script>
+		<script src="../assets/js/util.js"></script>
+		<script src="../assets/js/main.js"></script>
+	</body>
+</html>

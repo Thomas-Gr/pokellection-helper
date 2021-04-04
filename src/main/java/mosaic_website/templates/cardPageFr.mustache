@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>PokéCards mosaic - {{pageTitle}}</title>
+		<meta name="description" content="Cartes Pokémon faites de cartes Pokémon.">
+        <meta name="keywords" content="Pokemon, Pokémon, Pokémon cards, Pokemon cards, TCG, mosaic, Pikachu, Mewtwo, Charizard">
+        <meta name="author" content="Arca`">
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../assets/css/main_min.css" />
+		<link rel="icon" href="../images/favicon.png">
+		<script src="../openseadragon/openseadragon.min.js"></script>
+
+        <meta property="og:title" content="PokéCards Mosaic - {{pageTitle}}"/>
+        <meta name="twitter:title" content="PokéCards Mosaic - {{pageTitle}}">
+        <meta property="og:type" content="Art"/>
+        <meta property="og:url" content="https://www.pokecards-mosaic.com"/>
+        <meta property="og:image" content="https://www.pokecards-mosaic.com/images/thumbnail.png"/>
+        <meta property="og:site_name" content="PokeCards Mosaic"/>
+        <meta property="og:description" content="Cartes Pokémon faites de cartes Pokémon."/>
+        <meta name="twitter:description" content="Cartes Pokémon faites de cartes Pokémon.">
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:creator" content="@Arca____">
+        <meta name="twitter:image" content="https://www.pokecards-mosaic.com/images/thumbnail_twitter.png"/>
+        <meta name="twitter:card" content="summary_large_image"/>
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-33225443-2"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-33225443-2');
+        </script>
+	</head>
+	<body>
+	    <div id="mosaicContainer">
+		    <div id="mosaic"></div>
+		</div>
+
+		<script src="../assets/js/jquery.min.js"></script>
+		<script>
+			(function($) {
+				$(function() {
+					var $window = $(window);
+
+					$('#mosaic').width($window.width());
+					$('#mosaic').height($window.height());
+
+					var viewer = OpenSeadragon({
+                        id: "mosaic",
+                        prefixUrl: "../openseadragon/images/",
+                        tileSources: "../images/mosaic/{{path}}.dzi",
+                        minZoomImageRatio: 0.2,
+                        maxZoomPixelRatio: 3
+                    });
+				});
+			})(jQuery);
+		</script>
+	</body>
+</html>
