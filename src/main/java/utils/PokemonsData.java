@@ -1199,7 +1199,7 @@ public class PokemonsData {
             .put("", "")
             .build();
 
-    public static final Pattern TRAINERS = Pattern.compile("(Blaine|Giovanni|Koga|Rocket|Sabrina|Erika|_____|Lt. Surge|Misty|Brock|Team Aqua|Team Magma)'s (.*)");
+    public static final Pattern TRAINERS = Pattern.compile("(Blaine|Giovanni|Koga|Rocket|Sabrina|Erika|_____|Lt. Surge|Misty|Brock|Team Aqua|Team Magma|Falkner|Bugsy|Whitney|Morty|Jasmine|Chuck|Pryce|Clair|Janine|Will|Bruno|Karen|Lance)'s (.*)");
     public static final Pattern ZARBI = Pattern.compile("Unown (.)");
     public static final Pattern DARK = Pattern.compile("Dark (.*)");
     public static final Pattern LIGHT = Pattern.compile("Light (.*)");
@@ -1233,11 +1233,24 @@ public class PokemonsData {
             .put("Lt. Surge", "Major Bob")
             .put("Team Aqua", "Team Aqua")
             .put("Team Magma", "Team Magma")
+            .put("Falkner", "Albert")
+            .put("Bugsy", "Hector")
+            .put("Whitney", "Blance")
+            .put("Morty", "Mortimer")
+            .put("Jasmine", "Jasmine")
+            .put("Chuck", "Chuck")
+            .put("Pryce", "Frédo")
+            .put("Clair", "Jasmine")
+            .put("Janine", "Jeannine")
+            .put("Will", "Clément")
+            .put("Bruno", "Aldo")
+            .put("Karen", "Marion")
+            .put("Lance", "Peter")
             .put("_____", "_____")
             .build();
 
     public static final Map<String, String> TRAINERS_MAPPING_PRONOUN = ImmutableMap.<String, String>builder()
-            .put("Blaine", "d'")
+            .put("Blaine", "de")
             .put("Giovanni", "de ")
             .put("Koga", "de ")
             .put("Rocket", "des ")
@@ -1249,6 +1262,19 @@ public class PokemonsData {
             .put("Lt. Surge", "du ")
             .put("Team Aqua", "de la ")
             .put("Team Magma", "de la ")
+            .put("Falkner", "d'")
+            .put("Bugsy", "d'")
+            .put("Whitney", "de ")
+            .put("Morty", "de ")
+            .put("Jasmine", "de ")
+            .put("Chuck", "de ")
+            .put("Pryce", "de ")
+            .put("Clair", "de ")
+            .put("Janine", "de ")
+            .put("Will", "de ")
+            .put("Bruno", "d'")
+            .put("Karen", "de ")
+            .put("Lance", "de ")
             .build();
 
     public static final Map<String, String> FRENCH_NAMES = ImmutableMap.<String, String>builder()
