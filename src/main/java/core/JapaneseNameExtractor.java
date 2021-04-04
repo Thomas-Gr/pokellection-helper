@@ -30,7 +30,7 @@ public class JapaneseNameExtractor {
 
   private static void listFilesForFolder(final File folder) throws IOException {
     for (final File fileEntry : requireNonNull(folder.listFiles())) {
-      if (!fileEntry.isDirectory()) {
+      if (!fileEntry.isDirectory() && !fileEntry.getName().contains("DS_Store")) {
         Serie serie = process(objectMapper.readValue(fileEntry, Serie.class));
 
         String formattedSerie = new ObjectMapper().writeValueAsString(serie);

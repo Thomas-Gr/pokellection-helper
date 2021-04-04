@@ -13,7 +13,7 @@ import java.io.File
 private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
 private const val APPLICATION_NAME = "Pokellection helper"
 private val HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport()
-private const val RANGE = "!A2:M"
+private const val RANGE = "!A2:N"
 
 val EXPANSIONS_BINDINGS = mapOf(
     "Crossing the Ruins..." to "Crossing the Ruins",
@@ -83,8 +83,8 @@ class Importer {
         .setDateTimeRenderOption("FORMATTED_STRING")
         .execute()
         .getValues()
-        .filter { it.size >= 13 }
-        .map {it[12].toString().toInt() to Data(
+        .filter { it.size >= 14 }
+        .map {it[13].toString().toInt() to Data(
             it[3].toString(),
             it[4].toString(),
             it[5].toString(),

@@ -48,6 +48,9 @@ public class JsonReader {
         }
 
         for (Card card : serie.getCards().values()) {
+            if (card.explanation != null && (card.explanation.isEmpty() || card.explanation.length() == 1)) {
+                card.explanation = null;
+            }
             card.setPicture(card.getPicture().replaceAll("é", "e"));
 
             getFrenchName(card).ifPresent(card::setFrenchName);

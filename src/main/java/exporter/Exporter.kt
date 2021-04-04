@@ -12,7 +12,7 @@ import types.Serie
 private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
 private const val APPLICATION_NAME = "Pokellection helper"
 private val HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport()
-private val HEADER = listOf("Picture", "Wiki", "Card number", "Illustrator", "Name", "French name", "Japanese name", "Pokedex number", "Type", "Rarity", "Card count in set", "Additional details", "id")
+private val HEADER = listOf("Picture", "Wiki", "Card number", "Illustrator", "Name", "French name", "Japanese name", "Pokedex number", "Type 1", "Type 2", "Rarity", "Card count in set", "Additional details", "id")
 
 class Exporter {
 
@@ -48,8 +48,8 @@ class Exporter {
 
     spreadsheets.batchUpdate(spreadsheetId, BatchUpdateSpreadsheetRequest().setRequests(requests)).execute()
 
-    createHeader(spreadsheets, spreadsheetId, "'%s'!A1:M".format(name), HEADER)
-    addValuesToSheet(spreadsheets, spreadsheetId, "'%s'!A2:M".format(name), data)
+    createHeader(spreadsheets, spreadsheetId, "'%s'!A1:N".format(name), HEADER)
+    addValuesToSheet(spreadsheets, spreadsheetId, "'%s'!A2:N".format(name), data)
   }
 
 }

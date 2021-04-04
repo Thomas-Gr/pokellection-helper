@@ -33,6 +33,7 @@ fun mapRawData(card: Card): List<String> {
       card.japaneseName?.toString().orEmpty(),
       escapeNumber(card.pokemonNumber),
       card.type.name,
+      if (card.type2 == null) "" else card.type2.name,
       card.rarity.name,
       card.count.toString(),
       if (card.explanation?.toString().orEmpty().startsWith("'")) {
@@ -71,6 +72,7 @@ class CardsDataHelper {
         .build()
 
     override fun compare(a: List<String>, b: List<String>): Int {
+
       if (parseInt(a[2]) < 0 && parseInt(b[2]) > 0) {
         return 1
       } else if (parseInt(a[2]) > 0 && parseInt(b[2]) < 0) {
